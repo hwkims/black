@@ -237,9 +237,9 @@ function stand() {
 
     let message = "";
     if (playerSum > 21) {
-      message = "You Lose, you went bust.";
-      dealerMoney += bet_baseline
-      document.getElementById("dealerMoney").innerText = dealerMoney
+      message = "당신이 버스트했습니다. ";
+      dealerMoney += bet_baseline;
+      document.getElementById("dealerMoney").innerText = dealerMoney;
     } else {
       while (dealerSum < 17 || (dealerSum === 17 && dealerAceCount > 0)) {
         let cardImg = document.createElement("img");
@@ -255,36 +255,51 @@ function stand() {
       }
       if (bet == "base") {
         if (dealerSum > 21) {
-          message = "You Win, the dealer went bust and you didn't.";
-          playerMoney += bet_baseline  * 2;
-          dealerMoney -= bet_baseline
-          document.getElementById("playerMoney").innerText = playerMoney
+          message = "딜러가 버스트했습니다. 당신이 이겼습니다! ";
+          playerMoney += bet_baseline * 2;
+          dealerMoney -= bet_baseline;
+          document.getElementById("playerMoney").innerText = playerMoney;
           playWin();
         } else if (playerSum == dealerSum) {
-          message = "Dealer Wins, you tied!";
-          dealerMoney += bet_baseline
-          document.getElementById("dealerMoney").innerText = dealerMoney
+          message = "무승부입니다. ";
+          dealerMoney += bet_baseline;
+          document.getElementById("dealerMoney").innerText = dealerMoney;
         } else if (playerSum > dealerSum) {
-          message = "You win, you got more than the dealer.";
-          playerMoney += bet_baseline * 2
-          dealerMoney -= bet_baseline
-          document.getElementById("playerMoney").innerText = playerMoney
+          message = "당신이 이겼습니다! ";
+          playerMoney += bet_baseline * 2;
+          dealerMoney -= bet_baseline;
+          document.getElementById("playerMoney").innerText = playerMoney;
           playWin();
         } else if (playerSum < dealerSum) {
-          message = "You Lose, the dealer got more than you.";
-          dealerMoney += bet_baseline
-          document.getElementById("dealerMoney").innerText = dealerMoney
+          message = "당신이 졌습니다. ";
+          dealerMoney += bet_baseline;
+          document.getElementById("dealerMoney").innerText = dealerMoney;
         }
       }
     }
     document.getElementById("dealerSum").innerText = dealerSum;
     document.getElementById("results").innerText = message;
-    container = document.getElementById("refreshContainer");
-    var retryButton = document.createElement("button");
-    retryButton.innerText = "Retry";
-    retryButton.className = "button";
-    retryButton.addEventListener("click", restart);
-    container.appendChild(retryButton);
+
+// Create a retry button
+const retryButton = document.createElement("button");
+retryButton.className = "button";
+retryButton.innerText = "다시 시작";
+retryButton.onclick = function() { 
+  startBlackjack(); 
+};
+retryButton.style.zIndex = '1'; // Add this line
+document.getElementById("refreshContainer").append(retryButton);
+
+
+    // Create a result window
+    const resultWindow = document.createElement("div");
+resultWindow.className = "result-window";
+resultWindow.innerHTML = ` 
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center;">${message}</div> 
+`;
+resultWindow.style.pointerEvents = 'none'; // Add this line
+document.body.appendChild(resultWindow);
+
     hasStood = true;
   }
 
@@ -335,6 +350,12 @@ function split(){
   splitaces()
   splitsum()
   document.getElementById("playerSum").innerText = playerSum;
+
+    // Reduce card size when splitting
+    document.getElementById("hand1").style.width = "50%";
+  document.getElementById("hand2").style.width = "50%";
+  document.getElementById("playerCards").style.width = "50%";
+
 }
 //--------------------------------------------------------------------------------------------------
 function splitsum(){
@@ -529,4 +550,5 @@ function skip(){
     </div>
 
   </body>
+  
 </html>
