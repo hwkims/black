@@ -78,6 +78,9 @@ function shuffleDeck() {
 }
 //--------------------------------------------------------------------------------------------------
 function startBlackjack() {
+  document.getElementById("hit").style.display = "inline-block";
+document.getElementById("stand").style.display = "inline-block";
+// document.getElementById("split").style.display = "inline-block";
   if (playerMoney >= bet_baseline) {
     if (deck.length >= 4) {
       hidden = deck.pop();
@@ -280,6 +283,9 @@ function stand() {
     document.getElementById("dealerSum").innerText = dealerSum;
     document.getElementById("results").innerText = message;
     container = document.getElementById("refreshContainer");
+    document.getElementById("hit").style.display = "none";
+document.getElementById("stand").style.display = "none";
+document.getElementById("split").style.display = "none";
     var retryButton = document.createElement("button");
     retryButton.innerText = "Retry";
     retryButton.className = "button";
@@ -335,6 +341,11 @@ function split(){
   splitaces()
   splitsum()
   document.getElementById("playerSum").innerText = playerSum;
+    // Reduce card size to 50%
+    document.querySelectorAll('.cards img').forEach(img => {
+    img.style.width = '50%';
+    img.style.height = '50%';
+  });
 }
 //--------------------------------------------------------------------------------------------------
 function splitsum(){
@@ -493,6 +504,11 @@ function restart() {
     splitted = false;
     canSplit = true;
     startBlackjack()
+      // Restore original card size
+  document.querySelectorAll('.cards img').forEach(img => {
+    img.style.width = '';
+    img.style.height = '';
+  });
   }
 }
 //--------------------------------------------------------------------------------------------------
@@ -521,12 +537,19 @@ function skip(){
     <button id="stand" class="button">Stand</button>
     <button id="split" class="button">Split</button>
     <div id="refreshContainer"></div>
-    <p id="results"></p>
+
     <div id="player">
       <h2>Your Cards: <span id="playerSum"></span></h2>
       <h3>Current Money: <span id = "playerMoney"></span></h3>
       <div id="playerCards" class="cards"></div>
     </div>
-
+    <p id="results"></p>
+    <style>
+      #results{
+        text-align: left;
+        font-size: 30px;
+        margin: 70px;
+      }
+    </style>
   </body>
 </html>
